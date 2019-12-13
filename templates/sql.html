@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <title>SQL запрос {{ query }}</title>
+    <link rel="stylesheet" href="/static/codemirror/lib/codemirror.css">
+    <script src="/static/codemirror/lib/codemirror.js"></script>
+    <script src="/static/codemirror/addon/mode/multiplex.js"></script>
+    <script src="/static/codemirror/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="/static/codemirror/addon/hint/show-hint.css">
+    <script src="/static/codemirror/mode/sql/sql.js"></script>
+    <script src="/static/codemirror/addon/hint/show-hint.js"></script>
+    <script src="/static/codemirror/addon/hint/sql-hint.js"></script>
+</head>
+
+
+<body style="<<magic>>">
+<form action="/sql/" method="post" title="SQL">
+    {% csrf_token %}
+    <label>SQL запрос </label>
+    <textarea id="code" name="query">{{ query }}</textarea>
+    <input type="submit" value="Отправить">
+</form>
+{% if error %}
+    <div><p><font color="red">SQL : {{ error }}</font></p></div>
+{% endif %}
+{% if not error %}
+    <table border="1">
+    <caption>Результаты SQL запроса <font color="blue"><b>{{ query }}</b></font></caption>
+    <tr>
+        {% for  head in headers %}
+            <th>{{ head }}</th>
+        {% endfor %}
+    </tr>
+    {% for col in data %}
+        <tr>
+            {% for row in col %}
+                <td>{{ row }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+{% endif %}
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: "text/x-sql",
+        lineNumbers: true,
+        lineWrapping: true
+    });
+</script>
+</body>
+</html>

@@ -11,6 +11,6 @@
 
 from sql_execute.views import sql_execute
 
-url(r'^sql/$', sql_execute, name = 'sql_execute'),
+path('sql/', sql_execute, name = 'sql_execute'),
 
 4) Пользуйтесь по адресу http(s)://Ваш_проект.ru/sql

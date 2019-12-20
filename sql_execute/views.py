@@ -1,6 +1,6 @@
 # from django.shortcuts import render
 from django.shortcuts import render, HttpResponse
-from django.db.utils import OperationalError
+from django.db.utils import DatabaseError
 from django.db import connection
 
 
@@ -14,7 +14,7 @@ def sql_execute(request):
             cursor = connection.cursor()
             try:
                 cursor.execute(query)
-            except OperationalError as error:
+            except DatabaseError as error:
                 context = {'error': error.message,
                            'query': query, }
                 return render(request, 'sql.html', context)
